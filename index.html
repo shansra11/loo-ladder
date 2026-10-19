@@ -1,0 +1,345 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Loo Ladder</title>
+<meta name="description" content="A daily word ladder with no ads. Change one letter at a time to turn the start word into POOP.">
+<meta property="og:title" content="Loo Ladder">
+<meta property="og:description" content="Change one letter at a time to turn today's word into POOP. Free, no ads.">
+<meta name="theme-color" content="#e8f0f1" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0f191a" media="(prefers-color-scheme: dark)">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Loo Ladder">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="apple-touch-icon" href="data:image/png;base64,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">
+<link rel="icon" type="image/png" href="data:image/png;base64,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">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lilita+One&family=Outfit:wght@400;600;700&display=swap">
+<style>
+/* Layout: one narrow column like a tiled bathroom wall — header, ladder of letter tiles, keyboard pinned below. */
+:root{
+  --bg:#e8f0f1; --grout:#d6e2e4; --tile:#ffffff; --tile-edge:#c9d7da;
+  --fg:#17312f; --muted:#5d7472; --accent:#1d7470; --accent-fg:#ffffff;
+  --goal:#8b5a2b; --goal-fg:#fff8ef; --warn:#b3392f; --key:#dbe6e8; --key-fg:#17312f;
+  --display:"Lilita One","Arial Rounded MT Bold",system-ui,sans-serif;
+  --body:"Outfit",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0f191a; --grout:#16231f; --tile:#1b2b2d; --tile-edge:#29403f;
+  --fg:#e3eeec; --muted:#93aaa7; --accent:#3fb3aa; --accent-fg:#06201e;
+  --goal:#b47a42; --goal-fg:#1a0f05; --warn:#ef7b70; --key:#223537; --key-fg:#e3eeec; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0f191a; --grout:#16231f; --tile:#1b2b2d; --tile-edge:#29403f;
+  --fg:#e3eeec; --muted:#93aaa7; --accent:#3fb3aa; --accent-fg:#06201e;
+  --goal:#b47a42; --goal-fg:#1a0f05; --warn:#ef7b70; --key:#223537; --key-fg:#e3eeec; color-scheme:dark}
+html{height:100%;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);-webkit-text-size-adjust:100%}
+body{margin:0;height:100%}
+[hidden]{display:none!important}
+button{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+.kb,.actions,.modes{-webkit-user-select:none;user-select:none}
+.btnrow{display:flex;gap:8px;flex-wrap:wrap}
+.btnrow button{flex:1;height:44px}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:16px;
+  background-image:linear-gradient(var(--grout) 2px,transparent 2px),linear-gradient(90deg,var(--grout) 2px,transparent 2px);
+  background-size:56px 56px;}
+.app{max-width:460px;margin:0 auto;min-height:100%;display:flex;flex-direction:column;gap:12px;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:14px 12px;box-sizing:border-box}
+header{display:flex;align-items:center;justify-content:space-between;gap:8px}
+h1{font-family:var(--display);font-weight:400;font-size:1.9rem;margin:0;letter-spacing:.5px;line-height:1}
+h1 span{color:var(--goal)}
+.icons{display:flex;gap:6px}
+button{font-family:var(--body);cursor:pointer}
+button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.ibtn{background:var(--tile);border:1px solid var(--tile-edge);color:var(--fg);border-radius:10px;height:38px;padding:0 12px;font-weight:600;font-size:.9rem}
+.modes{display:flex;background:var(--tile);border:1px solid var(--tile-edge);border-radius:12px;padding:3px}
+.modes button{flex:1;border:0;background:transparent;color:var(--muted);font-weight:700;padding:8px;border-radius:9px;font-size:.95rem}
+.modes button[aria-pressed="true"]{background:var(--accent);color:var(--accent-fg)}
+.sub{display:flex;justify-content:space-between;align-items:baseline;color:var(--muted);font-size:.9rem;font-variant-numeric:tabular-nums}
+.sub b{color:var(--fg)}
+.ladder{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;overflow-y:auto;padding:4px 0}
+.row{display:flex;gap:6px;align-items:center;position:relative}
+.row .lbl{position:absolute;left:-38px;font-size:.75rem;color:var(--muted);width:30px;text-align:right;font-variant-numeric:tabular-nums}
+.t{width:52px;height:52px;display:grid;place-items:center;font-family:var(--display);font-size:1.7rem;text-transform:uppercase;
+  background:var(--tile);border:2px solid var(--tile-edge);border-radius:8px;box-shadow:0 2px 0 var(--tile-edge);color:var(--fg)}
+.t.match{background:var(--goal);border-color:var(--goal);color:var(--goal-fg);box-shadow:0 2px 0 color-mix(in srgb,var(--goal) 70%,#000)}
+.t.changed{outline:3px solid var(--accent);outline-offset:-6px}
+.row.start .t{border-color:var(--accent)}
+.row.input .t{border-style:dashed}
+.row.input .t.filled{border-style:solid;border-color:var(--fg)}
+.row.target .t{background:var(--goal);border-color:var(--goal);color:var(--goal-fg);opacity:.55}
+.row.target.reached .t{opacity:1}
+.row.hint .t{border-color:var(--muted);color:var(--muted)}
+.shake{animation:shake .35s}
+@keyframes shake{20%,60%{transform:translateX(-6px)}40%,80%{transform:translateX(6px)}}
+.pop .t{animation:pop .25s}
+@keyframes pop{50%{transform:scale(1.08)}}
+@media (prefers-reduced-motion:reduce){.shake,.pop .t{animation:none}}
+.gap{color:var(--muted);font-size:.8rem;letter-spacing:.08em;text-transform:uppercase}
+.msg{min-height:1.4em;text-align:center;font-weight:600;font-size:.95rem}
+.msg.err{color:var(--warn)}
+.actions{display:flex;gap:6px;justify-content:center;flex-wrap:wrap}
+.kb{display:flex;flex-direction:column;gap:6px;padding-bottom:env(safe-area-inset-bottom,0px)}
+.kr{display:flex;gap:5px;justify-content:center}
+.k{flex:1;max-width:42px;height:52px;border:0;border-radius:7px;background:var(--key);color:var(--key-fg);font-weight:700;font-size:1.05rem;text-transform:uppercase;padding:0}
+.k.wide{max-width:66px;flex:1.5;font-size:.8rem}
+.k:active{filter:brightness(.9)}
+.panel{background:var(--tile);border:1px solid var(--tile-edge);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:10px}
+.panel h2{font-family:var(--display);font-weight:400;margin:0;font-size:1.5rem}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;text-align:center}
+.stats div{display:flex;flex-direction:column}
+.stats b{font-family:var(--display);font-size:1.6rem;font-weight:400;font-variant-numeric:tabular-nums}
+.stats span{font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.primary{background:var(--accent);color:var(--accent-fg);border:0;border-radius:10px;height:44px;font-weight:700;font-size:1rem;padding:0 18px}
+.share{white-space:pre;font-size:.85rem;background:var(--bg);border-radius:8px;padding:8px;user-select:all;overflow-x:auto}
+.overlay{position:fixed;inset:0;background:color-mix(in srgb,var(--bg) 70%,transparent);display:grid;place-items:center;z-index:20;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.overlay .panel{max-width:400px;width:100%;box-shadow:0 10px 30px rgba(0,0,0,.2);max-height:85vh;overflow-y:auto}
+.help p{margin:0;line-height:1.45}
+.dist{display:flex;flex-direction:column;gap:4px;font-size:.85rem;font-variant-numeric:tabular-nums}
+.dist div{display:flex;gap:6px;align-items:center}
+.dist i{display:block;height:16px;background:var(--accent);border-radius:3px;min-width:4px}
+.dist label{width:64px;color:var(--muted)}
+.close{align-self:flex-end;background:none;border:0;color:var(--muted);font-size:1.4rem;line-height:1;padding:0}
+@media (max-width:380px){.t{width:46px;height:46px;font-size:1.5rem}.k{height:48px}}
+</style>
+</head>
+<body>
+
+<div class="app">
+  <header>
+    <h1>Loo <span>Ladder</span></h1>
+    <div class="icons">
+      <button class="ibtn" id="helpBtn" aria-label="How to play">?</button>
+      <button class="ibtn" id="statsBtn">Stats</button>
+    </div>
+  </header>
+  <div class="modes" role="group" aria-label="Mode">
+    <button id="modeDaily" aria-pressed="true">Daily</button>
+    <button id="modeFree" aria-pressed="false">Unlimited</button>
+  </div>
+  <div class="sub"><span id="puzzleLabel">Daily #1</span><span>Steps <b id="stepCount">0</b> · Par <b id="par">–</b></span></div>
+  <div class="ladder" id="ladder" aria-live="polite"></div>
+  <div class="msg" id="msg"></div>
+  <div class="actions">
+    <button class="ibtn" id="undoBtn">Undo</button>
+    <button class="ibtn" id="hintBtn">Hint</button>
+    <button class="ibtn" id="giveBtn">Give up</button>
+    <button class="ibtn" id="newBtn" hidden>New word</button>
+  </div>
+  <div class="kb" id="kb"></div>
+</div>
+
+<div class="overlay" id="overlay" hidden><div class="panel" id="panel"></div></div>
+
+<script>
+const COMMON=`able ache acid acne acre acts aged ages aide aids aims airs airy ajar akin alas ally aloe also alto alum amid amps anew ante ants apes apex arch arcs area aria arid arms army arts arty ashy atom atop aunt aura auto avid away awed awes awry axes axis axle
+babe baby back bade bags bail bait bake bald bale balk ball balm band bane bang bank bans barb bard bare bark barn bars base bash bask bass bath bats bawl bays bead beak beam bean bear beat beds beef been beep beer bees beet begs bell belt bend bent best beta bets bias bibs bide bids bike bile bill bind bins bird bite bits blah blew blip blob bloc blog blot blow blue blur boar boas boat bobs bode body bogs boil bold bolt bomb bond bone bong bonk bony book boom boon boor boos boot bops bore born boss both bout bowl bows boys brag bran bras brat bray bred brew brie brim brow buck buds buff bugs bulb bulk bull bump bunk buns bunt buoy burn burp bury bush bust busy buys buzz byte
+cabs cafe cage cake calf call calm came camp cane cans cape caps card care carp cars cart case cash cask cast cats cave cell cent chap chat chef chew chic chin chip chop chow chug chum cite city clad clam clan clap claw clay clip clog clot club clue coal coat coax cobs code cods coed cogs coil coin coke cola cold colt coma comb come cone cook cool coop coos cope cops copy cord core cork corn cost cosy cots coup cove cowl cows crab crag cram crew crib crop crow crud crux cube cubs cuds cued cues cuff cull cult cups curb curd cure curl curt cusp cute cuts
+dabs dads daft dais dale dame damp dams dank dare dark darn dart dash data date dawn days daze dead deaf deal dean dear debt deck deed deem deep deer deft defy deli dell demo dens dent deny desk dews dial dice died dies diet digs dill dime dims dine ding dins dips dire dirt disc dish disk diva dive dock docs dodo doer does doff dogs dole doll dome done dons doom door dope dorm dose dote dots dove down doze dozy drab drag dram draw drew drip drop drug drum dual duck duct dude duds duel dues duet duke dull duly dumb dump dune dung dunk dupe dusk dust duty dyed dyes
+each earl earn ears ease east easy eats ebbs echo eddy edge edgy edit eels eggs egos else emit ends envy epic eras ergo euro even ever eves evil exam exit eyed eyes
+face fact fade fads fail fair fake fall fame fang fans fare farm fast fate fawn faze fear feat feed feel fees feet fell felt fend fern feud fibs figs file fill film find fine fins fire firm fish fist fits five fizz flag flak flap flat flaw flax flea fled flee flew flex flip flit floe flog flop flow flue flux foal foam foes fogs foil fold folk fond font food fool foot ford fore fork form fort foul four fowl foxy fray free fret frog from fuel full fume fund funk furs fury fuse fuss fuzz
+gabs gaga gags gain gait gala gale gall gals game gang gaps garb gash gasp gate gave gawk gaze gear geek gels gems gene gent germ gets gift gigs gild gill gilt gins gird girl gist give glad glee glen glib glob glow glue glum glut gnat gnaw goad goal goat gobs gods goes gold golf gone gong good goof goon goop gore gory gosh gout gown grab gram gray grew grey grid grim grin grip grit grow grub gulf gull gulp gums gunk guns guru gush gust guts guys gyms
+hack hail hair hale half hall halo halt hams hand hang hard hare harm harp hash hate hats haul have hawk haze hazy head heal heap hear heat heck heed heel heft heir held helm help hems hens herb herd here hero hers hide high hike hill hilt hind hint hips hire hiss hits hive hoax hock hogs hold hole holy home hone honk hood hoof hook hoop hoot hope hops horn hose host hour howl hubs hues huff huge hugs hulk hull hump hums hung hunk hunt hurl hurt hush husk huts hymn hype
+ibex iced ices icky icon idea idle idly idol iffy inch info inks inky inns into ions iota iris irks iron isle itch item
+jabs jack jade jail jamb jams jars jaws jays jazz jean jeep jeer jell jerk jest jets jibe jigs jilt jinx jive jobs jock jogs join joke jolt jots jowl joys judo jugs jump junk jury just jute
+kale keel keen keep kegs kelp kept keys kick kids kill kiln kilt kind king kink kiss kite kits kiwi knee knew knit knob knot know
+labs lace lack lacy lads lady laid lair lake lamb lame lamp land lane laps lard lark lash lass last late lava lawn laws lays laze lazy lead leaf leak lean leap leek leer left legs lend lens lent less lest lets levy liar lice lick lids lied lies lieu life lift like lilt lily limb lime limo limp line link lint lion lips lisp list live load loaf loan lobe lobs loch lock loft logo logs loin lone long look loom loon loop loot lope lord lore lose loss lost lots loud lout love lows luck lugs lull lump lung lure lurk lush lute
+mace made maid mail maim main make male mall malt mama mane many maps mare mark mart mash mask mass mast mate math mats maul maze mead meal mean meat meek meet meld melt memo mend menu meow mere mesh mess mews mice mild mile milk mill mime mind mine mink mint minx mire miss mist mite mitt moan moat mobs mock mode mold mole molt monk mood moon moor moot mope mops more moss most moth move mown mows much muck muds muff mugs mule mull mums murk muse mush musk must mute mutt myth
+nabs nags nail name naps navy near neat neck need neon nerd nest nets news newt next nice nick nine nips node nods none nook noon nope norm nose nosy note noun nude null numb nuts
+oaks oars oath oats obey odds odes odor offs ogle ogre oils oily okay omen omit once ones only onto onus ooze oozy opal open opts opus oral orbs orca ores ouch ours oust outs oval oven over owed owes owls owns oxen
+pace pack pact pads page paid pail pain pair pale pall palm pals pane pang pans pant papa pare park part pass past pate path pave pawn paws pays peak peal pear peas peat peck peek peel peep peer pegs pelt pens perk perm pert pest pets pews pick pier pies pigs pike pile pill pine ping pink pins pint pipe pits pity plan play plea pled plod plop plot plow ploy plug plum plus pods poem poet poke poky pole poll polo pomp pond pong pony poof pooh pool poop poor pope pops pore pork port pose posh post posy pots pour pout pram pray prep prey prim prod prom prop prow pubs puck puff pugs puke pull pulp puma pump punk puns punt puny pups pure purr push puts putt
+quad quay quip quit quiz
+race rack racy raft rage rags raid rail rain rake ramp rams rang rank rant raps rare rash rasp rate rats rave rays raze read real ream reap rear redo reed reef reek reel rely rend rent rest ribs rice rich ride rife rift rigs rile rims rind ring rink riot ripe rips rise risk rite road roam roar robe robs rock rode rods role roll romp roof rook room root rope rose rosy rots rove rows rubs ruby rude rued rues ruff rugs ruin rule rump rung runs runt ruse rush rust ruts
+sack safe saga sage said sail sake sale salt same sand sane sang sank saps sari sash save saws says scab scam scan scar seal seam sear seas seat sect seed seek seem seen seep seer sees self sell semi send sent sets sewn sews shed shin ship shoe shoo shop shot show shun shut sick side sift sigh sign silk sill silo silt sing sink sins sips sire site sits size skew skid skim skin skip skis slab slam slap slat slaw sled slew slid slim slip slit slob slop slot slow slug slum slur smog snag snap snip snob snot snow snub snug soak soap soar sobs sock soda sofa soft soil sold sole solo some song soon soot sore sort soul soup sour sown sows soya spam span spar spat spec sped spin spit spot spry spud spun spur stab stag star stay stem step stew stir stop stow stub stud stun such suck suds sued sues suit sulk sumo sums sung sunk suns sure surf swab swam swan swap sway swig swim swum
+tabs tack taco tact tags tail take tale talk tall tame tamp tank tans tape taps tarp tars tart task taut taxi teak teal team tear teas teem teen tees tell temp tend tens tent term tern test text than that thaw thee them then they thin this thud thug thus tick tide tidy tied tier ties tile till tilt time tint tiny tips tire toad toed toes tofu toga toil told toll tomb tome tone tons took tool toot tops tore torn toss tote tots tour tout town tows toys tram trap tray tree trek trim trio trip trod trot true tuba tube tubs tuck tuft tugs tuna tune turf turn tusk tutu twig twin twit type typo
+ugly undo unit unto upon urge used user uses
+vain vale vane vary vase vast veal veer veil vein vent verb very vest veto vets vial vibe vice view vile vine visa void vole volt vote vows
+wade wads waft wage wags waif wail wait wake walk wall wand wane want ward ware warm warn warp wars wart wary wash wasp watt wave wavy waxy ways weak wear webs weds weed week weep weir weld well went wept were west wets wham what when whet whey whim whip whiz whom wick wide wife wigs wild will wilt wily wimp wind wine wing wink wins wipe wire wiry wise wish wisp with wits woke woks wolf womb wont wood woof wool woos word wore work worm worn wove wows wrap wren writ
+yaks yams yank yaps yard yarn yawn yeah year yell yelp yeti yoga yogi yoke yolk your yowl yuck yule
+zany zaps zeal zero zest zinc zing zips zone zonk zoom zoos`;
+
+const TARGET="poop";
+const DICT=new Set(COMMON.split(/\s+/).filter(w=>/^[a-z]{4}$/.test(w)));
+const VALID=new Set(DICT);
+const A="abcdefghijklmnopqrstuvwxyz";
+
+function neighbors(w,set){const out=[];for(let i=0;i<4;i++)for(const c of A){if(c===w[i])continue;const n=w.slice(0,i)+c+w.slice(i+1);if(set.has(n))out.push(n)}return out}
+// distance from every common word to POOP (BFS over the common dictionary)
+const DIST=new Map([[TARGET,0]]);
+(function(){let q=[TARGET];while(q.length){const nq=[];for(const w of q)for(const n of neighbors(w,DICT))if(!DIST.has(n)){DIST.set(n,DIST.get(w)+1);nq.push(n)}q=nq}})();
+const STARTS=[...DIST.entries()].filter(([w,d])=>d>=3&&d<=6&&!w.endsWith("s")).map(([w])=>w).sort();
+
+// Try to load a larger dictionary so less-common real words are accepted as guesses
+(async()=>{
+  const add=arr=>{let n=0;for(const w of arr)if(typeof w==="string"&&/^[a-z]{4}$/.test(w)){VALID.add(w);n++}return n};
+  const sources=[
+    async()=>{const m=await import("https://cdn.jsdelivr.net/npm/an-array-of-english-words@2/+esm");return Object.values(m).find(Array.isArray)||[]},
+    async()=>{const r=await fetch("https://cdn.jsdelivr.net/gh/dwyl/english-words@master/words_alpha.txt");if(!r.ok)throw new Error(r.status);return (await r.text()).split(/\r?\n/)}
+  ];
+  for(const load of sources){try{if(add(await load())>500)return}catch(e){}}
+})();
+
+function hash(s){let h=2166136261;for(const c of s){h^=c.charCodeAt(0);h=Math.imul(h,16777619)}return h>>>0}
+function today(){const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`}
+const EPOCH=new Date(2026,9,18);
+function dayNum(){const d=new Date();d.setHours(0,0,0,0);return Math.round((d-EPOCH)/864e5)+1}
+function dailyStart(){return STARTS[hash("loo-"+today())%STARTS.length]}
+
+const store={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+
+let mode="daily", S=null, typed="";
+function freshState(start){return {start,steps:[],done:false,gaveUp:false,hints:0,date:today()}}
+function loadDaily(){const s=store.get("loo-daily",null);if(s&&s.date===today())return s;return freshState(dailyStart())}
+function save(){if(mode==="daily")store.set("loo-daily",S)}
+
+const $=id=>document.getElementById(id);
+const ladderEl=$("ladder"),msgEl=$("msg");
+function cur(){return S.steps.length?S.steps[S.steps.length-1]:S.start}
+function par(){return DIST.get(S.start)}
+
+function tiles(word,prev,cls=""){
+  const r=document.createElement("div");r.className="row "+cls;
+  for(let i=0;i<4;i++){const t=document.createElement("div");t.className="t";const ch=word[i]||"";t.textContent=ch;
+    if(ch&&cls!=="input"&&cls!=="target"&&ch===TARGET[i])t.classList.add("match");
+    if(prev&&ch&&prev[i]!==ch&&cls!=="input")t.classList.add("changed");
+    if(cls==="input"&&ch)t.classList.add("filled");
+    r.appendChild(t)}
+  return r}
+
+function render(){
+  ladderEl.innerHTML="";
+  const st=tiles(S.start,null,"start");ladderEl.appendChild(st);
+  let prev=S.start;
+  S.steps.forEach((w,i)=>{const r=tiles(w,prev,i===S.steps.length-1?"pop":"");const l=document.createElement("span");l.className="lbl";l.textContent=i+1;r.appendChild(l);ladderEl.appendChild(r);prev=w});
+  const reached=S.done&&!S.gaveUp;
+  if(!S.done){ladderEl.appendChild(tiles(typed,null,"input"));
+    const g=document.createElement("div");g.className="gap";const d=DIST.get(cur());g.textContent=d!=null?`·  ·  ·`:"·  ·  ·";ladderEl.appendChild(g)}
+  if(!reached){const t=tiles(TARGET,null,"target");ladderEl.appendChild(t)}
+  else ladderEl.lastChild.classList.add("reached");
+  $("stepCount").textContent=S.steps.length;$("par").textContent=par()??"–";
+  $("puzzleLabel").textContent=mode==="daily"?`Daily #${dayNum()} · ${today()}`:"Unlimited practice";
+  $("undoBtn").disabled=S.done||!S.steps.length;$("hintBtn").disabled=S.done;$("giveBtn").disabled=S.done;
+  $("newBtn").hidden=mode!=="free";
+  const inp=ladderEl.querySelector(".input");if(inp)inp.scrollIntoView({block:"nearest"});
+}
+function say(t,err){msgEl.textContent=t;msgEl.className="msg"+(err?" err":"")}
+function shake(){const r=ladderEl.querySelector(".input");if(r){r.classList.remove("shake");void r.offsetWidth;r.classList.add("shake")}}
+
+function submit(){
+  if(S.done)return;
+  const w=typed,p=cur();
+  if(w.length<4){say("Type a full 4-letter word.",1);shake();return}
+  let diff=0;for(let i=0;i<4;i++)if(w[i]!==p[i])diff++;
+  if(diff!==1){say(`Change exactly one letter of ${p.toUpperCase()}.`,1);shake();return}
+  if(!VALID.has(w)){say(`${w.toUpperCase()} isn't in the word list.`,1);shake();return}
+  if(w===S.start||S.steps.includes(w)){say(`You already used ${w.toUpperCase()}.`,1);shake();return}
+  S.steps.push(w);typed="";
+  if(w===TARGET){S.done=true;finish()}else say("");
+  save();render();
+}
+function finish(){
+  const n=S.steps.length,p=par();
+  say(n<=p?(n<p?"Under par. Impressive flush.":"Right on par. Clean finish."):`Made it in ${n}. Par was ${p}.`);
+  if(mode==="daily")recordStats(true);
+  setTimeout(showResult,600);
+}
+function recordStats(win){
+  const st=store.get("loo-stats",{played:0,wins:0,streak:0,best:0,last:null,dist:{}});
+  if(st.last===today())return;
+  const y=new Date();y.setDate(y.getDate()-1);const yk=`${y.getFullYear()}-${String(y.getMonth()+1).padStart(2,"0")}-${String(y.getDate()).padStart(2,"0")}`;
+  st.played++;
+  if(win){st.wins++;st.streak=st.last===yk&&st.lastWin?st.streak+1:1;st.best=Math.max(st.best,st.streak);
+    const over=Math.min(S.steps.length-par(),4);const key=over<=0?(over<0?"under":"par"):over>=4?"+4":"+"+over;st.dist[key]=(st.dist[key]||0)+1}
+  else st.streak=0;
+  st.last=today();st.lastWin=win;store.set("loo-stats",st)
+}
+function siteUrl(){return /^https?:$/.test(location.protocol)?location.origin+location.pathname:""}
+function shareText(){
+  const rows=S.steps.map(w=>[...w].map((c,i)=>c===TARGET[i]?"🟫":"⬜").join(""));
+  const head=mode==="daily"?`Loo Ladder #${dayNum()}`:"Loo Ladder (practice)";
+  const res=S.gaveUp?"gave up 🧻":`${S.steps.length} steps · par ${par()}${S.hints?` · ${S.hints} hint${S.hints>1?"s":""}`:""}`;
+  const u=siteUrl();
+  return `${head} — ${res}\n${rows.join("\n")}${S.gaveUp?"":" 💩"}${u?"\n"+u:""}`
+}
+function showResult(){
+  const p=$("panel");
+  p.innerHTML=`<button class="close" aria-label="Close" data-close>×</button>
+  <h2>${S.gaveUp?"Down the drain":"You reached POOP"}</h2>
+  <p style="margin:0;color:var(--muted)">${S.gaveUp?"One shortest route:":`${S.start.toUpperCase()} → POOP in ${S.steps.length} steps. Par was ${par()}.`}</p>
+  ${S.gaveUp?`<p style="margin:0;font-weight:700;letter-spacing:.05em">${solve(S.start).map(w=>w.toUpperCase()).join(" → ")}</p>`:""}
+  <div class="share" id="shareBox">${shareText()}</div>
+  <div class="btnrow"><button class="primary" id="shareBtn"${navigator.share?"":" hidden"}>Share result</button><button class="${navigator.share?"ibtn":"primary"}" id="copyBtn">Copy result</button></div>
+  ${mode==="free"?`<button class="ibtn" id="againBtn">Play another</button>`:`<p style="margin:0;color:var(--muted);font-size:.9rem">A new daily ladder arrives at midnight. Unlimited mode is open anytime.</p>`}`;
+  $("overlay").hidden=false;
+  $("copyBtn").onclick=()=>{const t=shareText();navigator.clipboard.writeText(t).then(()=>{$("copyBtn").textContent="Copied"}).catch(()=>{const r=document.createRange();r.selectNodeContents($("shareBox"));const s=getSelection();s.removeAllRanges();s.addRange(r);$("copyBtn").textContent="Selected, press copy"})};
+  $("shareBtn").onclick=async()=>{try{await navigator.share({text:shareText()})}catch(e){}};
+  const a=$("againBtn");if(a)a.onclick=()=>{close();newFree()};
+}
+function solve(from){
+  let w=from,path=[];
+  if(!DIST.has(w)){const n=neighbors(w,DICT).filter(x=>DIST.has(x)).sort((a,b)=>DIST.get(a)-DIST.get(b))[0];if(!n)return [];w=n;path.push(w)}
+  while(w!==TARGET){w=neighbors(w,DICT).find(n=>DIST.get(n)===DIST.get(w)-1);path.push(w)}
+  return path
+}
+function hint(){
+  if(S.done)return;const p=cur();
+  const opts=neighbors(p,DICT).filter(n=>DIST.has(n)&&!S.steps.includes(n)&&n!==S.start).sort((a,b)=>DIST.get(a)-DIST.get(b));
+  if(!opts.length){say("No hint from this word. Try Undo.",1);return}
+  S.hints++;typed=opts[0];save();render();say(`Try ${opts[0].toUpperCase()} (${DIST.get(opts[0])} more to go after it). Press Enter.`)
+}
+function giveUp(){
+  if(S.done)return;
+  if($("giveBtn").dataset.arm!=="1"){$("giveBtn").dataset.arm="1";$("giveBtn").textContent="Tap again";setTimeout(()=>{$("giveBtn").dataset.arm="";$("giveBtn").textContent="Give up"},2500);return}
+  $("giveBtn").dataset.arm="";$("giveBtn").textContent="Give up";
+  S.done=true;S.gaveUp=true;if(mode==="daily")recordStats(false);save();render();say("");showResult()
+}
+function undo(){if(S.done||!S.steps.length)return;S.steps.pop();typed="";save();render();say("")}
+function newFree(){let s;do{s=STARTS[Math.floor(Math.random()*STARTS.length)]}while(S&&s===S.start);S=freshState(s);typed="";render();say("")}
+function setMode(m){mode=m;$("modeDaily").setAttribute("aria-pressed",m==="daily");$("modeFree").setAttribute("aria-pressed",m==="free");
+  typed="";if(m==="daily")S=loadDaily();else newFree();render();say(m==="daily"&&S.done?"You've finished today's ladder.":"")}
+
+function key(k){
+  if(S.done)return;
+  if(k==="enter")return submit();
+  if(k==="back"){typed=typed.slice(0,-1)}
+  else if(/^[a-z]$/.test(k)&&typed.length<4)typed+=k;
+  say("");render()
+}
+// keyboard
+const KR=["qwertyuiop","asdfghjkl","zxcvbnm"];
+KR.forEach((r,i)=>{const row=document.createElement("div");row.className="kr";
+  if(i===2){const b=document.createElement("button");b.className="k wide";b.textContent="Enter";b.onclick=()=>key("enter");row.appendChild(b)}
+  for(const c of r){const b=document.createElement("button");b.className="k";b.textContent=c;b.onclick=()=>key(c);row.appendChild(b)}
+  if(i===2){const b=document.createElement("button");b.className="k wide";b.textContent="⌫";b.setAttribute("aria-label","Delete");b.onclick=()=>key("back");row.appendChild(b)}
+  $("kb").appendChild(row)});
+document.addEventListener("keydown",e=>{if(e.metaKey||e.ctrlKey||e.altKey)return;if(!$("overlay").hidden){if(e.key==="Escape")close();return}
+  if(e.key==="Enter"){e.preventDefault();key("enter")}else if(e.key==="Backspace")key("back");else if(/^[a-zA-Z]$/.test(e.key))key(e.key.toLowerCase())});
+
+function close(){$("overlay").hidden=true}
+$("overlay").addEventListener("click",e=>{if(e.target.id==="overlay"||e.target.dataset.close!==undefined)close()});
+$("undoBtn").onclick=undo;$("hintBtn").onclick=hint;$("giveBtn").onclick=giveUp;$("newBtn").onclick=newFree;
+$("modeDaily").onclick=()=>setMode("daily");$("modeFree").onclick=()=>setMode("free");
+$("helpBtn").onclick=()=>{$("panel").innerHTML=`<button class="close" aria-label="Close" data-close>×</button><div class="help panel" style="border:0;padding:0">
+  <h2>How to play</h2>
+  <p>Start from the top word and climb down to <b>POOP</b>.</p>
+  <p>Each step changes exactly one letter, and every step has to be a real 4-letter word. Example: COOL → POOL → POOP.</p>
+  <p>Brown tiles are letters already in the right spot. The ringed tile is the letter you just changed.</p>
+  <p><b>Par</b> is the shortest possible ladder. Match it or beat it.</p>
+  <p><b>Daily</b> gives everyone the same word each day and tracks your streak. <b>Unlimited</b> is endless practice and never touches your stats.</p></div>`;$("overlay").hidden=false};
+$("statsBtn").onclick=()=>{const st=store.get("loo-stats",{played:0,wins:0,streak:0,best:0,dist:{}});
+  const keys=["under","par","+1","+2","+3","+4"],labels={under:"Under par",par:"On par","+1":"+1","+2":"+2","+3":"+3","+4":"+4 or more"};
+  const mx=Math.max(1,...keys.map(k=>st.dist[k]||0));
+  $("panel").innerHTML=`<button class="close" aria-label="Close" data-close>×</button><h2>Your stats</h2>
+  <div class="stats"><div><b>${st.played}</b><span>Played</span></div><div><b>${st.played?Math.round(st.wins/st.played*100):0}%</b><span>Solved</span></div><div><b>${st.streak}</b><span>Streak</span></div><div><b>${st.best}</b><span>Best</span></div></div>
+  <div class="dist">${keys.map(k=>`<div><label>${labels[k]}</label><i style="width:${(st.dist[k]||0)/mx*70}%"></i><span>${st.dist[k]||0}</span></div>`).join("")}</div>
+  <p style="margin:0;color:var(--muted);font-size:.85rem">Stats are saved in this browser only.</p>`;$("overlay").hidden=false};
+
+S=loadDaily();render();
+if(S.done)say("You've finished today's ladder. Try Unlimited for more.");
+else if(!store.get("loo-seen",false)){store.set("loo-seen",true);$("helpBtn").click()}
+</script>
+</body>
+</html>
