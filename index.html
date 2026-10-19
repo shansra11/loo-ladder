@@ -55,7 +55,7 @@ button{font-family:var(--body);cursor:pointer}
 button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
 .ibtn{background:var(--tile);border:1px solid var(--tile-edge);color:var(--fg);border-radius:10px;height:38px;padding:0 12px;font-weight:600;font-size:.9rem}
 .modes{display:flex;background:var(--tile);border:1px solid var(--tile-edge);border-radius:12px;padding:3px}
-.modes button{flex:1;border:0;background:transparent;color:var(--muted);font-weight:700;padding:8px;border-radius:9px;font-size:.95rem}
+.modes button{flex:1;min-width:0;border:0;background:transparent;color:var(--muted);font-weight:700;padding:8px 4px;border-radius:9px;font-size:.95rem}
 .modes button[aria-pressed="true"]{background:var(--accent);color:var(--accent-fg)}
 .sub{display:flex;justify-content:space-between;align-items:baseline;color:var(--muted);font-size:.9rem;font-variant-numeric:tabular-nums}
 .sub b{color:var(--fg)}
@@ -107,7 +107,7 @@ button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
 .dist i{display:block;height:16px;background:var(--accent);border-radius:3px;min-width:4px}
 .dist label{width:64px;color:var(--muted)}
 .close{align-self:flex-end;background:none;border:0;color:var(--muted);font-size:1.4rem;line-height:1;padding:0}
-@media (max-width:380px){.t{width:46px;height:46px;font-size:1.5rem}.k{height:48px}}
+@media (max-width:380px){.t{width:46px;height:46px;font-size:1.5rem}.k{height:48px}.modes button{font-size:.82rem}}
 @media (max-height:740px){.app{gap:8px;padding-block:10px 8px}.t{width:46px;height:46px;font-size:1.5rem}.k{height:46px}.enter{height:46px}.controls{margin-bottom:20px}.ladder .gap{display:none}}
 @media (max-height:600px){h1{font-size:1.5rem}.ibtn{height:32px}.modes button{padding:5px}.t{width:42px;height:42px;font-size:1.35rem}.k{height:40px}.enter{height:40px}}
 </style>
@@ -126,6 +126,7 @@ button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
     <button id="modeDaily" aria-pressed="true">Daily</button>
     <button id="modeFree" aria-pressed="false">Unlimited</button>
     <button id="modeNish" aria-pressed="false">Nish</button>
+    <button id="modeShan" aria-pressed="false">Shan</button>
   </div>
   <div class="sub"><span id="puzzleLabel">Daily #1</span><span>Steps <b id="stepCount">0</b> · Par <b id="par">–</b></span></div>
   <div class="ladder" id="ladder" aria-live="polite"></div>
@@ -179,11 +180,16 @@ const A="abcdefghijklmnopqrstuvwxyz";
 function neighbors(w,set){const out=[];for(let i=0;i<4;i++)for(const c of A){if(c===w[i])continue;const n=w.slice(0,i)+c+w.slice(i+1);if(set.has(n))out.push(n)}return out}
 // distance from every common word to the goal word (BFS over the common dictionary)
 function distances(goal){const D=new Map([[goal,0]]);let q=[goal];while(q.length){const nq=[];for(const w of q)for(const n of neighbors(w,DICT))if(!D.has(n)){D.set(n,D.get(w)+1);nq.push(n)}q=nq}return D}
-const DIST_POOP=distances("poop"),DIST_NISH=distances("nish");
+// Name modes start from the daily word but end on a name instead of POOP
+const NAMES=["nish","shan"];
+function isName(m){return NAMES.includes(m)}
+function title(m){return m[0].toUpperCase()+m.slice(1)}
+const DIST_BY={poop:distances("poop")};for(const n of NAMES)DIST_BY[n]=distances(n);
+const DIST_POOP=DIST_BY.poop;
 let DIST=DIST_POOP;
-// NISH isn't a dictionary word, so it's added to the word graph only as the goal
-const DICT_NISH=new Set([...DICT,"nish"]);
-function graph(){return TARGET==="nish"?DICT_NISH:DICT}
+// The names aren't dictionary words, so each is added to the word graph only as its own goal
+const GRAPH_BY={poop:DICT};for(const n of NAMES)GRAPH_BY[n]=new Set([...DICT,n]);
+function graph(){return GRAPH_BY[TARGET]}
 const STARTS=[...DIST_POOP.entries()].filter(([w,d])=>d>=3&&d<=6&&!w.endsWith("s")).map(([w])=>w).sort();
 
 // Try to load a larger dictionary so less-common real words are accepted as guesses
@@ -207,8 +213,8 @@ const store={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v)
 let mode="daily", S=null, typed="";
 function freshState(start){return {start,steps:[],done:false,gaveUp:false,hints:0,date:today()}}
 function loadDaily(){const s=store.get("loo-daily",null);if(s&&s.date===today())return s;return freshState(dailyStart())}
-function loadNish(){const s=store.get("loo-nish",null);if(s&&s.date===today())return s;return freshState(dailyStart())}
-function save(){if(mode==="daily")store.set("loo-daily",S);else if(mode==="nish")store.set("loo-nish",S)}
+function loadName(m){const s=store.get("loo-"+m,null);if(s&&s.date===today())return s;return freshState(dailyStart())}
+function save(){if(mode==="daily")store.set("loo-daily",S);else if(isName(mode))store.set("loo-"+mode,S)}
 
 const $=id=>document.getElementById(id);
 const ladderEl=$("ladder"),msgEl=$("msg");
@@ -235,7 +241,7 @@ function render(){
   if(!reached){const t=tiles(TARGET,null,"target");ladderEl.appendChild(t)}
   else ladderEl.lastChild.classList.add("reached");
   $("stepCount").textContent=S.steps.length;$("par").textContent=par()??"–";
-  $("puzzleLabel").textContent=mode==="daily"?`Daily #${dayNum()} · ${today()}`:mode==="nish"?`Nish #${dayNum()} · ${today()}`:"Unlimited practice";
+  $("puzzleLabel").textContent=mode==="daily"?`Daily #${dayNum()} · ${today()}`:isName(mode)?`${title(mode)} #${dayNum()} · ${today()}`:"Unlimited practice";
   $("undoBtn").disabled=S.done||!S.steps.length;$("hintBtn").disabled=S.done;$("giveBtn").disabled=S.done;const eb=$("enterBtn");if(eb)eb.disabled=S.done;
   $("newBtn").hidden=mode!=="free";
   ladderEl.scrollTop=ladderEl.scrollHeight;const inp=ladderEl.querySelector(".input");if(inp&&inp.getBoundingClientRect().top<ladderEl.getBoundingClientRect().top)inp.scrollIntoView({block:"end"});
@@ -275,7 +281,7 @@ function recordStats(win){
 function siteUrl(){return /^https?:$/.test(location.protocol)?location.origin+location.pathname:""}
 function shareText(){
   const rows=S.steps.map(w=>[...w].map((c,i)=>c===TARGET[i]?"🟫":"⬜").join(""));
-  const head=mode==="daily"?`Loo Ladder #${dayNum()}`:mode==="nish"?`Loo Ladder #${dayNum()} · NISH`:"Loo Ladder (practice)";
+  const head=mode==="daily"?`Loo Ladder #${dayNum()}`:isName(mode)?`Loo Ladder #${dayNum()} · ${mode.toUpperCase()}`:"Loo Ladder (practice)";
   const res=S.gaveUp?"gave up 🧻":`${S.steps.length} steps · par ${par()}${S.hints?` · ${S.hints} hint${S.hints>1?"s":""}`:""}`;
   const u=siteUrl();
   return `${head} — ${res}\n${rows.join("\n")}${S.gaveUp?"":TARGET==="poop"?" 💩":" ✅"}${u?"\n"+u:""}`
@@ -288,7 +294,7 @@ function showResult(){
   ${S.gaveUp?`<p style="margin:0;font-weight:700;letter-spacing:.05em">${solve(S.start).map(w=>w.toUpperCase()).join(" → ")}</p>`:""}
   <div class="share" id="shareBox">${shareText()}</div>
   <div class="btnrow"><button class="primary" id="shareBtn"${navigator.share?"":" hidden"}>Share result</button><button class="${navigator.share?"ibtn":"primary"}" id="copyBtn">Copy result</button></div>
-  ${mode==="free"?`<button class="ibtn" id="againBtn">Play another</button>`:`<p style="margin:0;color:var(--muted);font-size:.9rem">${mode==="nish"?"Tomorrow's Nish ladder starts from the next daily word.":"A new daily ladder arrives at midnight. Unlimited mode is open anytime."}</p>`}`;
+  ${mode==="free"?`<button class="ibtn" id="againBtn">Play another</button>`:`<p style="margin:0;color:var(--muted);font-size:.9rem">${isName(mode)?`Tomorrow's ${title(mode)} ladder starts from the next daily word.`:"A new daily ladder arrives at midnight. Unlimited mode is open anytime."}</p>`}`;
   $("overlay").hidden=false;
   $("copyBtn").onclick=()=>{const t=shareText();navigator.clipboard.writeText(t).then(()=>{$("copyBtn").textContent="Copied"}).catch(()=>{const r=document.createRange();r.selectNodeContents($("shareBox"));const s=getSelection();s.removeAllRanges();s.addRange(r);$("copyBtn").textContent="Selected, press copy"})};
   $("shareBtn").onclick=async()=>{try{await navigator.share({text:shareText()})}catch(e){}};
@@ -314,10 +320,10 @@ function giveUp(){
 }
 function undo(){if(S.done||!S.steps.length)return;S.steps.pop();typed="";save();render();say("")}
 function newFree(){let s;do{s=STARTS[Math.floor(Math.random()*STARTS.length)]}while(S&&s===S.start);S=freshState(s);typed="";render();say("")}
-function setMode(m){mode=m;for(const [id,v] of [["modeDaily","daily"],["modeFree","free"],["modeNish","nish"]])$(id).setAttribute("aria-pressed",m===v);
-  TARGET=m==="nish"?"nish":"poop";DIST=m==="nish"?DIST_NISH:DIST_POOP;
-  typed="";if(m==="daily")S=loadDaily();else if(m==="nish")S=loadNish();else newFree();render();
-  say(S.done&&m!=="free"?(m==="nish"?"You've finished today's Nish ladder.":"You've finished today's ladder."):"")}
+function setMode(m){mode=m;for(const [id,v] of [["modeDaily","daily"],["modeFree","free"],["modeNish","nish"],["modeShan","shan"]])$(id).setAttribute("aria-pressed",m===v);
+  TARGET=isName(m)?m:"poop";DIST=DIST_BY[TARGET];
+  typed="";if(m==="daily")S=loadDaily();else if(isName(m))S=loadName(m);else newFree();render();
+  say(S.done&&m!=="free"?(isName(m)?`You've finished today's ${title(m)} ladder.`:"You've finished today's ladder."):"")}
 
 function key(k){
   if(S.done)return;
@@ -338,14 +344,14 @@ document.addEventListener("keydown",e=>{if(e.metaKey||e.ctrlKey||e.altKey)return
 function close(){$("overlay").hidden=true}
 $("overlay").addEventListener("click",e=>{if(e.target.id==="overlay"||e.target.dataset.close!==undefined)close()});
 $("enterBtn").onclick=()=>key("enter");$("undoBtn").onclick=undo;$("hintBtn").onclick=hint;$("giveBtn").onclick=giveUp;$("newBtn").onclick=newFree;
-$("modeDaily").onclick=()=>setMode("daily");$("modeFree").onclick=()=>setMode("free");$("modeNish").onclick=()=>setMode("nish");
+$("modeDaily").onclick=()=>setMode("daily");$("modeFree").onclick=()=>setMode("free");$("modeNish").onclick=()=>setMode("nish");$("modeShan").onclick=()=>setMode("shan");
 $("helpBtn").onclick=()=>{$("panel").innerHTML=`<button class="close" aria-label="Close" data-close>×</button><div class="help panel" style="border:0;padding:0">
   <h2>How to play</h2>
   <p>Start from the top word and climb down to <b>POOP</b>.</p>
   <p>Each step changes exactly one letter, and every step has to be a real 4-letter word. Example: COOL → POOL → POOP.</p>
   <p>Brown tiles are letters already in the right spot. The ringed tile is the letter you just changed.</p>
   <p><b>Par</b> is the shortest possible ladder. Match it or beat it.</p>
-  <p><b>Daily</b> gives everyone the same word each day and tracks your streak. <b>Unlimited</b> is endless practice and never touches your stats. <b>Nish</b> starts from today's daily word, but the goal is <b>NISH</b>.</p></div>`;$("overlay").hidden=false};
+  <p><b>Daily</b> gives everyone the same word each day and tracks your streak. <b>Unlimited</b> is endless practice and never touches your stats. <b>Nish</b> and <b>Shan</b> start from today's daily word, but the goal is <b>NISH</b> or <b>SHAN</b>.</p></div>`;$("overlay").hidden=false};
 $("statsBtn").onclick=()=>{const st=store.get("loo-stats",{played:0,wins:0,streak:0,best:0,dist:{}});
   const keys=["under","par","+1","+2","+3","+4"],labels={under:"Under par",par:"On par","+1":"+1","+2":"+2","+3":"+3","+4":"+4 or more"};
   const mx=Math.max(1,...keys.map(k=>st.dist[k]||0));
