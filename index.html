@@ -125,6 +125,7 @@ button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
   <div class="modes" role="group" aria-label="Mode">
     <button id="modeDaily" aria-pressed="true">Daily</button>
     <button id="modeFree" aria-pressed="false">Unlimited</button>
+    <button id="modeNish" aria-pressed="false">Nish</button>
   </div>
   <div class="sub"><span id="puzzleLabel">Daily #1</span><span>Steps <b id="stepCount">0</b> · Par <b id="par">–</b></span></div>
   <div class="ladder" id="ladder" aria-live="polite"></div>
@@ -170,16 +171,20 @@ wade wads waft wage wags waif wail wait wake walk wall wand wane want ward ware 
 yaks yams yank yaps yard yarn yawn yeah year yell yelp yeti yoga yogi yoke yolk your yowl yuck yule
 zany zaps zeal zero zest zinc zing zips zone zonk zoom zoos`;
 
-const TARGET="poop";
+let TARGET="poop";
 const DICT=new Set(COMMON.split(/\s+/).filter(w=>/^[a-z]{4}$/.test(w)));
 const VALID=new Set(DICT);
 const A="abcdefghijklmnopqrstuvwxyz";
 
 function neighbors(w,set){const out=[];for(let i=0;i<4;i++)for(const c of A){if(c===w[i])continue;const n=w.slice(0,i)+c+w.slice(i+1);if(set.has(n))out.push(n)}return out}
-// distance from every common word to POOP (BFS over the common dictionary)
-const DIST=new Map([[TARGET,0]]);
-(function(){let q=[TARGET];while(q.length){const nq=[];for(const w of q)for(const n of neighbors(w,DICT))if(!DIST.has(n)){DIST.set(n,DIST.get(w)+1);nq.push(n)}q=nq}})();
-const STARTS=[...DIST.entries()].filter(([w,d])=>d>=3&&d<=6&&!w.endsWith("s")).map(([w])=>w).sort();
+// distance from every common word to the goal word (BFS over the common dictionary)
+function distances(goal){const D=new Map([[goal,0]]);let q=[goal];while(q.length){const nq=[];for(const w of q)for(const n of neighbors(w,DICT))if(!D.has(n)){D.set(n,D.get(w)+1);nq.push(n)}q=nq}return D}
+const DIST_POOP=distances("poop"),DIST_NISH=distances("nish");
+let DIST=DIST_POOP;
+// NISH isn't a dictionary word, so it's added to the word graph only as the goal
+const DICT_NISH=new Set([...DICT,"nish"]);
+function graph(){return TARGET==="nish"?DICT_NISH:DICT}
+const STARTS=[...DIST_POOP.entries()].filter(([w,d])=>d>=3&&d<=6&&!w.endsWith("s")).map(([w])=>w).sort();
 
 // Try to load a larger dictionary so less-common real words are accepted as guesses
 (async()=>{
@@ -202,7 +207,8 @@ const store={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v)
 let mode="daily", S=null, typed="";
 function freshState(start){return {start,steps:[],done:false,gaveUp:false,hints:0,date:today()}}
 function loadDaily(){const s=store.get("loo-daily",null);if(s&&s.date===today())return s;return freshState(dailyStart())}
-function save(){if(mode==="daily")store.set("loo-daily",S)}
+function loadNish(){const s=store.get("loo-nish",null);if(s&&s.date===today())return s;return freshState(dailyStart())}
+function save(){if(mode==="daily")store.set("loo-daily",S);else if(mode==="nish")store.set("loo-nish",S)}
 
 const $=id=>document.getElementById(id);
 const ladderEl=$("ladder"),msgEl=$("msg");
@@ -229,7 +235,7 @@ function render(){
   if(!reached){const t=tiles(TARGET,null,"target");ladderEl.appendChild(t)}
   else ladderEl.lastChild.classList.add("reached");
   $("stepCount").textContent=S.steps.length;$("par").textContent=par()??"–";
-  $("puzzleLabel").textContent=mode==="daily"?`Daily #${dayNum()} · ${today()}`:"Unlimited practice";
+  $("puzzleLabel").textContent=mode==="daily"?`Daily #${dayNum()} · ${today()}`:mode==="nish"?`Nish #${dayNum()} · ${today()}`:"Unlimited practice";
   $("undoBtn").disabled=S.done||!S.steps.length;$("hintBtn").disabled=S.done;$("giveBtn").disabled=S.done;const eb=$("enterBtn");if(eb)eb.disabled=S.done;
   $("newBtn").hidden=mode!=="free";
   ladderEl.scrollTop=ladderEl.scrollHeight;const inp=ladderEl.querySelector(".input");if(inp&&inp.getBoundingClientRect().top<ladderEl.getBoundingClientRect().top)inp.scrollIntoView({block:"end"});
@@ -243,7 +249,7 @@ function submit(){
   if(w.length<4){say("Type a full 4-letter word.",1);shake();return}
   let diff=0;for(let i=0;i<4;i++)if(w[i]!==p[i])diff++;
   if(diff!==1){say(`Change exactly one letter of ${p.toUpperCase()}.`,1);shake();return}
-  if(!VALID.has(w)){say(`${w.toUpperCase()} isn't in the word list.`,1);shake();return}
+  if(!VALID.has(w)&&w!==TARGET){say(`${w.toUpperCase()} isn't in the word list.`,1);shake();return}
   if(w===S.start||S.steps.includes(w)){say(`You already used ${w.toUpperCase()}.`,1);shake();return}
   S.steps.push(w);typed="";
   if(w===TARGET){S.done=true;finish()}else say("");
@@ -251,7 +257,8 @@ function submit(){
 }
 function finish(){
   const n=S.steps.length,p=par();
-  say(n<=p?(n<p?"Under par. Impressive flush.":"Right on par. Clean finish."):`Made it in ${n}. Par was ${p}.`);
+  const pun=TARGET==="poop";
+  say(n<=p?(n<p?(pun?"Under par. Impressive flush.":"Under par. Nice work."):(pun?"Right on par. Clean finish.":"Right on par.")):`Made it in ${n}. Par was ${p}.`);
   if(mode==="daily")recordStats(true);
   setTimeout(showResult,600);
 }
@@ -268,20 +275,20 @@ function recordStats(win){
 function siteUrl(){return /^https?:$/.test(location.protocol)?location.origin+location.pathname:""}
 function shareText(){
   const rows=S.steps.map(w=>[...w].map((c,i)=>c===TARGET[i]?"🟫":"⬜").join(""));
-  const head=mode==="daily"?`Loo Ladder #${dayNum()}`:"Loo Ladder (practice)";
+  const head=mode==="daily"?`Loo Ladder #${dayNum()}`:mode==="nish"?`Loo Ladder #${dayNum()} · NISH`:"Loo Ladder (practice)";
   const res=S.gaveUp?"gave up 🧻":`${S.steps.length} steps · par ${par()}${S.hints?` · ${S.hints} hint${S.hints>1?"s":""}`:""}`;
   const u=siteUrl();
-  return `${head} — ${res}\n${rows.join("\n")}${S.gaveUp?"":" 💩"}${u?"\n"+u:""}`
+  return `${head} — ${res}\n${rows.join("\n")}${S.gaveUp?"":TARGET==="poop"?" 💩":" ✅"}${u?"\n"+u:""}`
 }
 function showResult(){
   const p=$("panel");
   p.innerHTML=`<button class="close" aria-label="Close" data-close>×</button>
-  <h2>${S.gaveUp?"Down the drain":"You reached POOP"}</h2>
-  <p style="margin:0;color:var(--muted)">${S.gaveUp?"One shortest route:":`${S.start.toUpperCase()} → POOP in ${S.steps.length} steps. Par was ${par()}.`}</p>
+  <h2>${S.gaveUp?"Down the drain":`You reached ${TARGET.toUpperCase()}`}</h2>
+  <p style="margin:0;color:var(--muted)">${S.gaveUp?"One shortest route:":`${S.start.toUpperCase()} → ${TARGET.toUpperCase()} in ${S.steps.length} steps. Par was ${par()}.`}</p>
   ${S.gaveUp?`<p style="margin:0;font-weight:700;letter-spacing:.05em">${solve(S.start).map(w=>w.toUpperCase()).join(" → ")}</p>`:""}
   <div class="share" id="shareBox">${shareText()}</div>
   <div class="btnrow"><button class="primary" id="shareBtn"${navigator.share?"":" hidden"}>Share result</button><button class="${navigator.share?"ibtn":"primary"}" id="copyBtn">Copy result</button></div>
-  ${mode==="free"?`<button class="ibtn" id="againBtn">Play another</button>`:`<p style="margin:0;color:var(--muted);font-size:.9rem">A new daily ladder arrives at midnight. Unlimited mode is open anytime.</p>`}`;
+  ${mode==="free"?`<button class="ibtn" id="againBtn">Play another</button>`:`<p style="margin:0;color:var(--muted);font-size:.9rem">${mode==="nish"?"Tomorrow's Nish ladder starts from the next daily word.":"A new daily ladder arrives at midnight. Unlimited mode is open anytime."}</p>`}`;
   $("overlay").hidden=false;
   $("copyBtn").onclick=()=>{const t=shareText();navigator.clipboard.writeText(t).then(()=>{$("copyBtn").textContent="Copied"}).catch(()=>{const r=document.createRange();r.selectNodeContents($("shareBox"));const s=getSelection();s.removeAllRanges();s.addRange(r);$("copyBtn").textContent="Selected, press copy"})};
   $("shareBtn").onclick=async()=>{try{await navigator.share({text:shareText()})}catch(e){}};
@@ -289,15 +296,15 @@ function showResult(){
 }
 function solve(from){
   let w=from,path=[];
-  if(!DIST.has(w)){const n=neighbors(w,DICT).filter(x=>DIST.has(x)).sort((a,b)=>DIST.get(a)-DIST.get(b))[0];if(!n)return [];w=n;path.push(w)}
-  while(w!==TARGET){w=neighbors(w,DICT).find(n=>DIST.get(n)===DIST.get(w)-1);path.push(w)}
+  if(!DIST.has(w)){const n=neighbors(w,graph()).filter(x=>DIST.has(x)).sort((a,b)=>DIST.get(a)-DIST.get(b))[0];if(!n)return [];w=n;path.push(w)}
+  while(w!==TARGET){w=neighbors(w,graph()).find(n=>DIST.get(n)===DIST.get(w)-1);path.push(w)}
   return path
 }
 function hint(){
   if(S.done)return;const p=cur();
-  const opts=neighbors(p,DICT).filter(n=>DIST.has(n)&&!S.steps.includes(n)&&n!==S.start).sort((a,b)=>DIST.get(a)-DIST.get(b));
+  const opts=neighbors(p,graph()).filter(n=>DIST.has(n)&&!S.steps.includes(n)&&n!==S.start).sort((a,b)=>DIST.get(a)-DIST.get(b));
   if(!opts.length){say("No hint from this word. Try Undo.",1);return}
-  S.hints++;typed=opts[0];save();render();say(`Try ${opts[0].toUpperCase()} (${DIST.get(opts[0])} more to go after it). Press Enter.`)
+  S.hints++;typed=opts[0];save();render();const d=DIST.get(opts[0]);say(d===0?`${opts[0].toUpperCase()} finishes it. Press Enter.`:`Try ${opts[0].toUpperCase()} (${d} more to go after it). Press Enter.`)
 }
 function giveUp(){
   if(S.done)return;
@@ -307,8 +314,10 @@ function giveUp(){
 }
 function undo(){if(S.done||!S.steps.length)return;S.steps.pop();typed="";save();render();say("")}
 function newFree(){let s;do{s=STARTS[Math.floor(Math.random()*STARTS.length)]}while(S&&s===S.start);S=freshState(s);typed="";render();say("")}
-function setMode(m){mode=m;$("modeDaily").setAttribute("aria-pressed",m==="daily");$("modeFree").setAttribute("aria-pressed",m==="free");
-  typed="";if(m==="daily")S=loadDaily();else newFree();render();say(m==="daily"&&S.done?"You've finished today's ladder.":"")}
+function setMode(m){mode=m;for(const [id,v] of [["modeDaily","daily"],["modeFree","free"],["modeNish","nish"]])$(id).setAttribute("aria-pressed",m===v);
+  TARGET=m==="nish"?"nish":"poop";DIST=m==="nish"?DIST_NISH:DIST_POOP;
+  typed="";if(m==="daily")S=loadDaily();else if(m==="nish")S=loadNish();else newFree();render();
+  say(S.done&&m!=="free"?(m==="nish"?"You've finished today's Nish ladder.":"You've finished today's ladder."):"")}
 
 function key(k){
   if(S.done)return;
@@ -329,14 +338,14 @@ document.addEventListener("keydown",e=>{if(e.metaKey||e.ctrlKey||e.altKey)return
 function close(){$("overlay").hidden=true}
 $("overlay").addEventListener("click",e=>{if(e.target.id==="overlay"||e.target.dataset.close!==undefined)close()});
 $("enterBtn").onclick=()=>key("enter");$("undoBtn").onclick=undo;$("hintBtn").onclick=hint;$("giveBtn").onclick=giveUp;$("newBtn").onclick=newFree;
-$("modeDaily").onclick=()=>setMode("daily");$("modeFree").onclick=()=>setMode("free");
+$("modeDaily").onclick=()=>setMode("daily");$("modeFree").onclick=()=>setMode("free");$("modeNish").onclick=()=>setMode("nish");
 $("helpBtn").onclick=()=>{$("panel").innerHTML=`<button class="close" aria-label="Close" data-close>×</button><div class="help panel" style="border:0;padding:0">
   <h2>How to play</h2>
   <p>Start from the top word and climb down to <b>POOP</b>.</p>
   <p>Each step changes exactly one letter, and every step has to be a real 4-letter word. Example: COOL → POOL → POOP.</p>
   <p>Brown tiles are letters already in the right spot. The ringed tile is the letter you just changed.</p>
   <p><b>Par</b> is the shortest possible ladder. Match it or beat it.</p>
-  <p><b>Daily</b> gives everyone the same word each day and tracks your streak. <b>Unlimited</b> is endless practice and never touches your stats.</p></div>`;$("overlay").hidden=false};
+  <p><b>Daily</b> gives everyone the same word each day and tracks your streak. <b>Unlimited</b> is endless practice and never touches your stats. <b>Nish</b> starts from today's daily word, but the goal is <b>NISH</b>.</p></div>`;$("overlay").hidden=false};
 $("statsBtn").onclick=()=>{const st=store.get("loo-stats",{played:0,wins:0,streak:0,best:0,dist:{}});
   const keys=["under","par","+1","+2","+3","+4"],labels={under:"Under par",par:"On par","+1":"+1","+2":"+2","+3":"+3","+4":"+4 or more"};
   const mx=Math.max(1,...keys.map(k=>st.dist[k]||0));
