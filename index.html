@@ -86,6 +86,9 @@ button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
 .k{flex:1;max-width:42px;height:52px;border:0;border-radius:7px;background:var(--key);color:var(--key-fg);font-weight:700;font-size:1.05rem;text-transform:uppercase;padding:0}
 .k.wide{max-width:66px;flex:1.5;font-size:.8rem}
 .k:active{filter:brightness(.9)}
+.enter{height:52px;margin-bottom:6px;border:0;border-radius:10px;background:var(--accent);color:var(--accent-fg);font-family:var(--display);font-size:1.4rem;letter-spacing:.06em;box-shadow:0 3px 0 color-mix(in srgb,var(--accent) 60%,#000)}
+.enter:active{transform:translateY(2px);box-shadow:0 1px 0 color-mix(in srgb,var(--accent) 60%,#000)}
+.enter:disabled{opacity:.4}
 .panel{background:var(--tile);border:1px solid var(--tile-edge);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:10px}
 .panel h2{font-family:var(--display);font-weight:400;margin:0;font-size:1.5rem}
 .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;text-align:center}
@@ -221,7 +224,7 @@ function render(){
   else ladderEl.lastChild.classList.add("reached");
   $("stepCount").textContent=S.steps.length;$("par").textContent=par()??"–";
   $("puzzleLabel").textContent=mode==="daily"?`Daily #${dayNum()} · ${today()}`:"Unlimited practice";
-  $("undoBtn").disabled=S.done||!S.steps.length;$("hintBtn").disabled=S.done;$("giveBtn").disabled=S.done;
+  $("undoBtn").disabled=S.done||!S.steps.length;$("hintBtn").disabled=S.done;$("giveBtn").disabled=S.done;const eb=$("enterBtn");if(eb)eb.disabled=S.done;
   $("newBtn").hidden=mode!=="free";
   const inp=ladderEl.querySelector(".input");if(inp)inp.scrollIntoView({block:"nearest"});
 }
@@ -310,8 +313,8 @@ function key(k){
 }
 // keyboard
 const KR=["qwertyuiop","asdfghjkl","zxcvbnm"];
+{const b=document.createElement("button");b.className="enter";b.id="enterBtn";b.textContent="Enter";b.onclick=()=>key("enter");$("kb").appendChild(b)}
 KR.forEach((r,i)=>{const row=document.createElement("div");row.className="kr";
-  if(i===2){const b=document.createElement("button");b.className="k wide";b.textContent="Enter";b.onclick=()=>key("enter");row.appendChild(b)}
   for(const c of r){const b=document.createElement("button");b.className="k";b.textContent=c;b.onclick=()=>key(c);row.appendChild(b)}
   if(i===2){const b=document.createElement("button");b.className="k wide";b.textContent="⌫";b.setAttribute("aria-label","Delete");b.onclick=()=>key("back");row.appendChild(b)}
   $("kb").appendChild(row)});
